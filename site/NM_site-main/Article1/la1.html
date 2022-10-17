@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Сайт</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="../styles/styles.css">
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script src="js/shCore.js"></script>
+    <script src="js/shBrushCpp.js"></script>
+    <script>
+      SyntaxHighlighter.all()
+    </script>
+    <link href="css/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="Cover">
+    
+<div id="container">
+
+  <div id="ribbon">
+     <a class="aMain" href="https://bmstu.ru" style="float: left; border-right: 0px;">МГТУ им. Н. Э. Баумана</a> 
+     <a href="https://sm.bmstu.ru/" >Специальное машиностроение</a>
+     <a href="http://www.sm3-bmstu.ru/" style="float: right;">Кафедра СМ3</a>
+  </div> 
+
+  <div id="header"> <div class="logo" alt="cover" style=" margin-left: auto;
+     margin-right: auto;">
+     <p1 style="font-size: x-large; color: rgb(255, 255, 255);  font-family: 'Comfortaa', cursive;"></p1> 
+  </div> </div>
+       
+  <div id="navigation"> 	
+    <div class="navBar">
+        <br> <br>
+        <a href="https://" >Главная</a><br><br>
+        <br> <br>
+        <a href="https://" class="active">Образовательные статьи</a><br><br>
+        <a href="https://">Практические задачи </a><br><br>
+        <a href="https://">Научно-популярные статьи</a><br><br>
+        <a href="https://">Методические указания</a><br>
+    </div>
+  </div>
+
+<div class="content" style="min-height: 720px;"> 
+<div class="leftcol">
+
+
+   
+<div >
+     <!--<div class="author">Автор: Халманский Ярослав</div> --> 
+
+<h1 style="text-align: left; line-height: 1.2; ">Численное интегрирование систем дифференциальных уравнений</h1>
+<div class="tags">
+    <a href="https://">#Прикладная математика</a>, 
+    <a href="https://">#Дифференциальные уравнения </a>
+</div>
+<br>
+<img style="width: 600px; height: 300px;" src="https://miro.medium.com/max/1200/1*uyQqYJELWhwmIEsmDcOy-A.png" />
+<div class="articleText">
+
+
+<p>
+Дифференциальные уравнения повсюду: они возникают в моделировании технических систем и физических процессов, а также в <a href="https://ru.wikipedia.org/wiki/Модель_Солоу">экономике</a>, <a href="https://ru.wikipedia.org/wiki/Популяционная_модель">биологии</a>, 
+<a href="https://nplus1.ru/material/2019/12/26/epidemic-math">медицине</a>.
+</p>
+
+                
+<p>
+В этой статье мы будем рассматривать численные методы решения <i>обыкновенных дифференциальных уравнений</i>: таких уравнений, в которых есть только одна независимая переменная.
+</p>
+
+
+<p>
+\[F(t, y, y', y'', ..., y^{(n)}(t)) = 0 \]
+</p>
+
+Более того, мы будем считать, что наше уравнение можно свести к виду <i> нормальной системы диффернциальных уравнений </i>:
+
+<p>
+\[
+
+\begin{cases}
+  \frac{dy_1}{dt} = f_1(y_1, y_2, ..., y_n, t) \\
+  \frac{dy_2}{dt} = f_2(y_1, y_2, ..., y_n, t) \\
+  ... \\
+  \frac{dy_n}{dt} = f_n(y_1, y_2, ..., y_n, t)
+\end{cases}
+
+\]
+</p>
+
+Которую можно записать в векторном виде
+<p>
+  \[
+  \frac{ \overrightarrow{dy} }{dt}=\overrightarrow{f}(\overrightarrow{y},t)
+  \]
+</p>
+
+
+<p>
+  в котором
+  \(
+  \overrightarrow{y}=(y_{1},y_{2},...,y_{n})
+  \)
+</p>
+
+<p>
+Пример сведения задачи к виду (?) показан в Примере (?)
+</p>
+
+<p>
+Решением системы (?) зачастую является множество функций. Для разрешения этой проблемы, задают <i> дополнительные условия</i>, например: ставят <i> Задачу Коши </i> :
+</p>
+
+<p>
+\[
+
+\begin{cases}
+  \frac{d\vec{y}}{dt} = \vec{f}(\vec{y}, t) \\
+  \vec{y}(0) = \vec{y_0}
+\end{cases}
+
+\]
+</p>
+
+<p>
+
+То есть добавляют информацию о начальном состоянии решения. Решение такой задачи тоже не всегда единственно, но мы будем считать, что выполняется условие теоремы:
+
+</p>
+
+<figure class="theorem">
+  <figcaption><b>Теорема 1 </b> (О коректности задачи Коши)</figcaption>
+  <p>
+    
+  Если \(\vec{f}(t, \vec{y})\) - Липшифц-Непрерывна по \(\vec{y}\), т.е. существует \(L > 0\) такое, что выполняется:
+
+  \[\textbf{}
+    \langle \vec{f}(t, \vec{y}_{(1)}) - \vec{f}(t, \vec{y}_{(2)}) \rangle \leq
+    L \langle \vec{y}_{(1)} - \vec{y}_{(2)} \rangle
+  \]
+И дополнительно \(\vec{f}(t, \vec{y})\) непрерывна (по всем переменным), то решение задачи Коши (?) существует и единственно.
+
+  </p>
+</figure>
+
+
+<figure class="theorem">
+  <figcaption> <b> Пример 1 </b>. Сведение Д/У к нормальному виду</figcaption>
+
+  <p>
+  Рассмотрим классическую задачу двух тел: пусть у нас есть плокость, на которой заданы две материальные точки, взаимодействующие друг с другом через силы гравитационного притяжения:
+  \[
+  \vec{F}(\vec r) = - G m_1 m_2 \frac{\vec r}{r^3}
+  \]
+
+  Запишем уравнения динамики для тел:
+
+  \[
+    \begin{cases}
+        m_1 \ddot{\vec{r_1}} = - G m_1 m_2 \frac{\vec r}{r^3} \\
+        m_2 \ddot{\vec{r_2}} = G m_1 m_2 \frac{\vec r}{r^3}
+    \end{cases}
+  \]
+
+  Получим уравнения на центр масс системы и относительное смещение
+
+  \[
+    \begin{cases}
+        \ddot{\vec{r_c}} = \frac{m_1 \ddot{\vec{r_1}} + m_2 \ddot{\vec{r_2}} }{m_1 + m_2} \\
+        \ddot{\vec{r}} = \ddot{\vec{r_2}}- \ddot{\vec{r_1}} = G (m_1 + m_2) \frac{\vec{r} }{r^3}
+    \end{cases}
+  \]
+
+  Приведем второе уравнение в системе к нормальному виду. Для этого введем вектор неизвестных:
+  \[
+    \vec y = 
+    \begin{pmatrix}
+    r_x, &
+    r_y, &
+    \dot r_x, &
+    \dot r_y
+    \end{pmatrix}^T
+  \]
+
+  Простыми словами, мы объявляем функцию и все её производные ниже старшей степени (2) неизвестными, тогда из определения нашего нового вектора мы получаем систему в нормальном виде:
+
+  \[
+    \begin{cases}
+        \dot y_1 = y_3 \\
+        \dot y_2 = y_4 \\
+        \dot y_3 = G(m_1 + m_2) \frac{y_1}{(y_1^2+y_2^2)^{3/2}} \\
+        \dot y_4 = G(m_1 + m_2) \frac{y_2}{(y_1^2+y_2^2)^{3/2}}
+    \end{cases}
+    \; \Longleftrightarrow \; \frac{d \vec y}{dt} = f(t, \vec y)
+  \]
+
+  </p>
+</figure>
+
+<p> В этой статье мы будем разбирать методы построения <i> численного решения </i> задачи Коши: поиск таблицы значений близких (позднее формализуем насколько) к решению в заранее выбранных координатных точках, в дальнейшем именуемых сеткой.
+
+\[
+
+\begin{array}{ |c|c| c |c| } 
+ \hline
+ t_1 & t_2 & \; \; ... \; \; & t_N \\ 
+ y_1^{(1)} & y_2^{(1)} & \; \; ... \; \; & y_N^{(1)} \\ 
+  y_1^{(2)} & y_2^{(2)} & \; \; ... \; \; & y_N^{(2)} \\
+  ... & ... & ... & ... \\
+  y_1^{(n)} & y_2^{(n)} & ... & y_N^{(n)} \\
+ \hline
+\end{array}
+
+\]
+
+
+</p>
+
+Зачем же нужно численное интегрирование задачи?
+
+              
+<ol>
+  <li> Поиск аналитического решения задачи затруднен (не получается применить простые приемы, например разделить переменные)
+  <li> Удалось найти решение в квадратурах, но все еще приходится брать интеграл численно
+  <li> Автоматизация сбора данных. Например: датчик возвращает ускорение в реальном времени, необходимо обработать входнные данные и найти скорость</li>    
+</ol>
+
+  <br>
+<h2> Метод Эйлера</h2>
+
+  <p>   Рассмотрим простейший пример, когда система ОДУ имеет первый порядок и мы можем явно выразить производную в дифференциальном уравнении.
+  \[
+   \frac{dy}{dx} = f(y, x)
+  \]
+  </p>
+
+  <p> Предположим, что получить аналитическое решение такого дифференциального уравнения не представляется возможным.  
+  </p>
+
+  <p>
+  Изменим постановку вопроса - можем ли мы определить множество точек, которые будут близки к решению дифференциального уравнения (?) ?
+  </p>
+  <p>
+  Дифференциальное уравнение (?) по сути задаёт поле касательных к искомому решению. То есть, зная
+   дифференциальное уравнение, мы можем определить в каждой точке (в каждой допустимой точке) 
+   тангенс угла наклона к функции, которая является решением дифференциального уравнения.
+  </p>
+
+  <div class="image">
+    <iframe scrolling="no" width="600px" height="445px" src="https://preview.p5js.org/inventorsib/embed/Y6w6BfuIt"></iframe>
+    <p>Поле направлений дифференциального уравнения <i style="font-family: 'Segoe UI'">y’=-y</i> и соответствующие решение для выбранной точки </p>
+  </div>
+            
+  <details> 
+    <summary>Замечание</summary>
+    <p> Дифференциальное уравнение \(y' = - y\) задаёт поле направлений, в котором тангенс угла наклона касательной к
+      решению в точке равен -у и не зависит от переменной \(x\). 
+      Как видно на рисунке, направление стрелочек не зависит от \(x\).
+      С уменьшением модуля \(y\) уменьшается угол наклона стрелочек.
+      <br>
+      Данное дифференциальное уравнение имеет множество решений 
+      \[ y = C \exp(-x), \; C \in  ℝ \]
+    </p>
+  </details>
+
+  <div style="background-color: cornsilk; padding: 20px  ;">
+    Из данного примера возникает закономерный вопрос, как организовать алгоритм, 
+    позволяющий по полю направлений построить кривую, близкую к решению дифференциального уравнения?
+  </div>
+  <br>
+
+  <p>
+    Метод Эйлера является простейшим и самым наглядным методом решения систем дифференциальных уравнений.
+  </p>
+  <p>
+    Пусть нам дано дифференциальное уравнение первого порядка и значение искомой функции в некоторой точке (поставлена задача Коши).
+  </p>
+<p>
+\[
+
+\begin{cases}
+y' = f(x, y) \\
+y(x_0) = y_0
+\end{cases}
+
+\]
+</p>
+
+<p>
+  В задаче Коши мы знаем начальные условия, но можем ли мы найти значение \(y\) в произвольной точке \(x\), 
+  если нам дана система (?)?
+</p>
+
+<p>
+  Представим, что мы хотим определить \( y \) в 
+  точке \( x_0 + h \), где \( h \) - некоторый малый шаг.
+  Вспомним определение производной (мат. анализ):
+
+  \[
+
+  y' = \lim_{h \rightarrow 0} \frac{y(x_0 + h) - y_0}{h} \approx \frac{y(x_0 + h) - y(x_0)}{h}
+
+  \]
+
+  
+  Из (?) нам также известно, что \[ y' = f(x, y)\] и \(y(x_0) = y_0\), а шаг \( h \) выберем сами. 
+  
+  Значит мы можем определить приближенное значение функции
+  
+  \[ 
+  y( x_0 + h ) \approx y( x_0 ) + f(x_0, y(x_0))h = y_1
+  \]
+
+  <div class="image">
+    <img src="https://habrastorage.org/webt/_f/bf/t8/_fbft8joxfjumt-ymj1blgtmsga.png" />
+  </div>
+
+
+  <p>
+    Чтобы узнать приближенное значение функции в следующей точке \(y(x_0+2h) \) необходимо
+    знать значение \(y_1 \), которое получено в результате предыдущей итерации.
+  </p>
+
+  \[ 
+    y( x_0 + 2h ) \approx y_1 + f(x_0 + h, y_1)h = y_2
+    \]
+  
+          
+  <p>
+    Продолжая итерацию, мы можем последовательно вычислить значения в точках \( x = x_0 + nh, \; n \in \mathbb{N} \) по той же формуле:
+    
+    \[ 
+    y( x_0 + nh ) \approx y_n = y_{n-1} + f(x_0+(n-1)h, y_{n-1})h
+    \]
+
+    У внимательного читателя может вознкнуть вопрос: почему мы вычисляем значения в узлах последовательно по предудущему значению, если можно из начальной точки \( x_0 \) постороить решение методом Эйлера с разными шагами:
+
+    \[
+
+    y( x_0 + nh ) \approx y( x_0 ) + f(x_0, y(x_0))nh
+
+    \]
+
+    Но такой подход приведет к существенному повышению ошибки интегрирования. Для того, чтобы это объяснить введем понятие <i> апроксимации</i>. Для этого подставим в формулу Метода Эйлера аналитическое решение задачи в общем виде левой и правых частей:
+
+
+    \[
+      R(\tilde{y}) = \tilde{y}( x_0 + nh ) - \tilde{y}( x_0 + (n-1)h ) - f(x_0, y(x_0))h
+    \]
+
+    Применим к \( \tilde{y} \) разложение по формуле тейлора до второго порядка \( \tilde{y}(x) = \tilde{y}(x_0) + \tilde y'(x_0) h + \tilde y''(x_0) h^2/2 + o(h^2) \). Подставим полученное выражение в \( R(\tilde{y}) \) также именуемую в численных методах как невязкой по правой части,и возьмем её норму (пусть будет модуль). Отсюда мы получим:
+
+    \[
+
+    \begin{multline}
+    | R(\tilde{y}) | = |  \tilde y'(x_0) h + \ f(x_0, y(x_0))h - \tilde y(x_0+h) | = \\
+    = | \tilde y''(x_0+(n-1)h) h^2/2 + o(h^2) | = O(h^2)
+    \end{multline}
+    \]
+    <i style="color: red;"> Тут лучше сам поправь))</i>
+    Мы получили, что наша схема <i> апроксимирует задачу с 2-ым порядком точности</i> (по степени \( h \))
+
+    <details> 
+    <summary>Определение О-большое, о-малое</summary>
+    <p> Пока пусто, нужно будет вставить про классы эквивалентности
+    </p>
+  </details>
+
+
+  </p>
+
+  <p>
+    Напомним, что по требованию численное решение должно быть "близко" к аналитическому. Таким образом, мы видим, что если будем решать задачу последовательно, то сохраним ту же верхнюю оценку. Если же будем решать задачу с разными шагами, то ошибка будет мажорироваться наибольшим шагом \( Nh \)
+
+  </p>
+
+
+  Если рассматривать геометрически данный метод, то итерации 
+  метода Эйлера выглядят как движение по полю направлений с некоторым шагом h:
+  <br><br>
+            
+
+    <video  preload="auto" muted width="600" autoplay="autoplay" loop src="./media/video.webm">Видео не загрузилось</video>
+
+<figure class="theorem">
+  <figcaption> <b> Пример 2</b>. Попробуем решить следующие дифференциальное уравнение (задачу Коши)</figcaption>
+
+  <p>
+   
+    \[
+    \begin{cases}
+    y' = -y \sin(x) \\
+    y(0) = 1
+    \end{cases}
+    \]
+
+  </p>
+
+  <details> 
+    <summary>Аналитическое решение</summary>
+    
+    <p>
+      <br>
+      Данное дифференциальное уравнение имеет аналитическое
+      решение.
+      <br><br>
+      <img class="articleFormula" src="https://latex.codecogs.com/svg.image?\begin{matrix}y'=-y\sin\left(x\right)&space;\\\frac{dy}{dx}=-y\sin\left(x\right)&space;\\\frac{dy}{y}=-\sin\left(x\right)dx&space;\\\int_{&space;}^{&space;}\frac{dy}{y}=\int_{&space;}^{&space;}-\sin\left(x\right)dx&space;\\y=\exp\left(\cos\left(x\right)&plus;C\right)&space;\\y\left(0\right)=\exp\left(1&plus;C\right)=1&space;\Rightarrow&space;C=-1&space;\\y=\exp\left(\cos\left(x\right)-1\right)\end{matrix}" title="\begin{matrix}y'=-y\sin\left(x\right) \\\frac{dy}{dx}=-y\sin\left(x\right) \\\frac{dy}{y}=-\sin\left(x\right)dx \\\int_{ }^{ }\frac{dy}{y}=\int_{ }^{ }-\sin\left(x\right)dx \\y=\exp\left(\cos\left(x\right)+C\right) \\y\left(0\right)=\exp\left(1+C\right)=1 \Rightarrow C=-1 \\y=\exp\left(\cos\left(x\right)-1\right)\end{matrix}" />
+      <br>
+      Именно это решение мы и будем сравнивать с решением,
+       которое получим методом Эйлера.
+    </p>
+  </details>
+
+  <p>
+    Выберем шаг h = 0.5. Получим:
+    <br><br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{1}=1&plus;\left(-1\sin\left(0\right)\right)\cdot0.5=1" title="y_{1}=1+\left(-1\sin\left(0\right)\right)\cdot0.5=1" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{2}\&space;=\&space;1\&space;&plus;\&space;\left(-1\sin\left(0.5\right)\right)\cdot0.5=0.76" title="y_{2}\ =\ 1\ +\ \left(-1\sin\left(0.5\right)\right)\cdot0.5=0.76" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{3}\&space;=\&space;0.76\&space;&plus;\&space;\left(-0.76\sin\left(1\right)\right)\cdot0.5=0.44" title="y_{3}\ =\ 0.76\ +\ \left(-0.76\sin\left(1\right)\right)\cdot0.5=0.44" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{4}=0.44&plus;\left(-0.44\sin\left(1.5\right)\right)\cdot0.5=0.22" title="y_{4}=0.44+\left(-0.44\sin\left(1.5\right)\right)\cdot0.5=0.22" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{5}=0.22&plus;\left(-0.22\sin\left(2\right)\right)\cdot0.5=0.12" title="y_{5}=0.22+\left(-0.22\sin\left(2\right)\right)\cdot0.5=0.12" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{6}=0.12&plus;\left(-0.12\sin\left(2.5\right)\right)\cdot0.5=0.084" title="y_{6}=0.12+\left(-0.12\sin\left(2.5\right)\right)\cdot0.5=0.084" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{7}=0.084&plus;\left(-0.084\sin\left(3\right)\right)\cdot0.5=0.078" title="y_{7}=0.084+\left(-0.084\sin\left(3\right)\right)\cdot0.5=0.078" />
+    <br>
+    <img class="articleFormula" src="https://latex.codecogs.com/svg.image?y_{8}=0.078&plus;\left(-0.078\sin\left(3.5\right)\right)\cdot0.5=0.092" title="y_{8}=0.078+\left(-0.078\sin\left(3.5\right)\right)\cdot0.5=0.092" />
+  </p>
+  <br>
+  </p>
+</figure>
+
+<p>
+  Ниже представлен простой код на cpp реализующий метод Эйлера для данной задачи:
+</p>
+
+<pre style='color:#000000;background:#ffffff; border: 1px solid #999;'>  <span style='color:#696969; '>//значение производной в точке (х, у)</span>
+  <span style='color:#800000; font-weight:bold; '>float</span> derivative<span style='color:#808030; '>(</span> <span style='color:#800000; font-weight:bold; '>float</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>float</span> y<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+      <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>-</span>y<span style='color:#808030; '>*</span><span style='color:#603000; '>sin</span><span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span> 
+  <span style='color:#800080; '>}</span>
+  
+  <span style='color:#800000; font-weight:bold; '>int</span> <span style='color:#400000; '>main</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+      <span style='color:#696969; '>// шаг интегрирования</span>
+      <span style='color:#800000; font-weight:bold; '>float</span> h <span style='color:#808030; '>=</span> <span style='color:#008000; '>0.5</span><span style='color:#800080; '>;</span>
+      <span style='color:#696969; '>// начальное значение y </span>
+      <span style='color:#800000; font-weight:bold; '>float</span> y <span style='color:#808030; '>=</span> <span style='color:#008c00; '>1</span><span style='color:#800080; '>;</span>
+      <span style='color:#696969; '>//условие остановки</span>
+      <span style='color:#800000; font-weight:bold; '>float</span> xk <span style='color:#808030; '>=</span> <span style='color:#008c00; '>4</span><span style='color:#800080; '>;</span> 
+      <span style='color:#800000; font-weight:bold; '>for</span><span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>float</span> x<span style='color:#808030; '>=</span><span style='color:#008c00; '>0</span> <span style='color:#696969; '>/*начальное значение х*/</span><span style='color:#800080; '>;</span>
+      x<span style='color:#808030; '>&lt;</span><span style='color:#808030; '>=</span>xk<span style='color:#800080; '>;</span> x<span style='color:#808030; '>=</span>x<span style='color:#808030; '>+</span>h <span style='color:#808030; '>)</span>
+      <span style='color:#800080; '>{</span>
+         <span style='color:#696969; '>// вывод данных</span>
+         <span style='color:#666616; '>std</span><span style='color:#800080; '>::</span><span style='color:#603000; '>cout</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> x <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0f69ff; '>\t</span><span style='color:#800000; '>"</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> y <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#666616; '>std</span><span style='color:#800080; '>::</span><span style='color:#603000; '>endl</span><span style='color:#800080; '>;</span>
+         <span style='color:#696969; '>// итерация методом Эйлера</span>
+         y <span style='color:#808030; '>=</span> y <span style='color:#808030; '>+</span> derivative<span style='color:#808030; '>(</span>x<span style='color:#808030; '>,</span> y<span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+      <span style='color:#800080; '>}</span>
+  
+      <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+</pre>
+<!--Created using ToHtml.com on 2021-08-08 10:06:08 UTC -->
+
+  <p>
+    Сравним полученное численное решение с ранее полученным аналитическим решением.
+    <div class="image">
+      <img src="https://habrastorage.org/webt/cp/mf/m3/cpmfm389grmhvs_t9fpdjyfhyqc.png" />
+    </div>
+  </p>
+
+ </div>
+  
+<p>
+  Основным параметром численных методов и в частности метода Эйлера является значение шага h. 
+  Величиной шага мы настраиваем работу метода. Так что достаточно важным является вопрос о выборе величины шага.
+  <br> <br>
+  Рассмотрим множество численных решений, полученных методом Эйлера с разным шагом.
+  <br><br>
+  <iframe style=" width: 604px; height: 344px; border: 0px;" src="https://preview.p5js.org/inventorsib/present/XWA-plYbu"></iframe>
+  <br>
+</p>
+
+<p>
+  Как видно, качественно численное решение становится более близким к аналитическому при уменьшении
+  шага.
+</p>
+
+<p>
+  Проведем количественный численный эксперимент. <br> Возьмём всё то же дифференциальное уравнение (?). 
+  В зависимости от шага будем определять максимальный модуль разности между численным и аналитическим решением 
+  в узлах решения \( {(x_0, y_0), (x_1, y_1), ... , (x_i, y_i) } ∈ I \), которой будем называть глобальной ошибкой интегрирования на
+  интервале. Интервал интегрирования возьмем \( x∈[0; 30] \), а шаг будем изменять от 0,4 до 0,01.
+</p>
+
+<div class="image">
+  <img style="width: 600px; border: 2px solid rgb(236, 236, 236);" src="https://habrastorage.org/webt/pi/cb/t8/picbt8l3gqdarb3ifdwakhe3cng.png" />
+  <p>Зависимость глобальной ошибки от шага</p>
+</div>
+
+<p>
+  Как видно на рисунке, с уменьшением размера шага уменьшается ошибка численного решения. Как было сказано выше,
+  ошибка аппроксимация на шаге уменьшается с уменьшением размера шага. Это приводит к тому, что удаётся точнее определить
+   не только значение функции в следующей точке, но и точнее определить значение производной, что важно для точности последующих итераций.
+</p>
+
+  <!--
+  <img style="width: 60px; height: 38px;" src="https://habrastorage.org/webt/ua/vt/zx/uavtzxenm_l0wbtxjnuv8u0j6xe.png" />
+  -->
+  Но существует и другой способ уменьшить ошибку интегрирования - методологический. 
+
+  <h2> Модифицированный метод Эйлера</h2>
+  До этого мы использовали для аппроксимации и поиска значения функции в следующей точке только первый и второй члены ряда Тейлора
+ 
+  \[
+  y\left(x_{0}+h\right)\approx y\left(x_{0}\right)+f\left(x_{0},\ y\left(x_{0}\right)\right)\cdot h
+  \]
+
+  Модифицируем метод и выделим уже первые три члена в ряде Тейлора
+  \[
+  y\left(x_{0}+h\right)=y\left(x_{0}\right)+y'\left(x_{0}\right)h+y''\left(x_{0}\right)\frac{h^{2}}{2}+...
+  \]
+
+  Нам необходимо в данном выражении определить вторую производную
+  \(
+  y''\left(x_{0}\right)
+  \)
+  <br>
+  <details> 
+    <summary>Замечание</summary>
+    
+    <p>
+      В случае, если нам задано аналитически дифференциальное уравнение, мы можем аналитически определить вторую производную \( y''\left(x\right)=\frac{df\left(x,y\right)}{dx} \)
+      <br>
+      Но в случае системы, найти таким образом производную может быть весьма сложно или невозможно. Также производная может быть задана через алгоритм, например как алгоритм получения данных с датчика. 
+      Поэтому определим вторую производную численно.
+    </p>
+  </details>
+  
+  Найдём вторую производную через конечно-разностную схему, то есть воспользуемся тем, что вторая производная это
+  производная от первой производной. 
+  \[
+  y''\left(x_{i}\right)=\left(y'\left(x_{i}\right)\right)'=f'\left(x_{i},\ y_{i}\right)\approx \frac{f\left(\widetilde{x},\ \widetilde{y}\right)-f\left(x_{i},\ y_{i}\right)}{\Delta x}
+  \]
+  где \( \widetilde{x}=x_{i}+\Delta x \)
+  , \( \widetilde{y}=y\left(x_{i}+\Delta x\right)\approx y_{i+1} \)
+
+  <p>
+    Тогда приближенное значение функции в следующей точке можно получить по формуле.
+    \[
+    y_{i+1}=y_{i}+f\left(x_{i},\ y_{i}\right)h+\frac{h^{2}}{2}\frac{f\left(x_{i}+\Delta x,\ y_{i}+f\left(x_{i},\ y_{i}\right)\Delta x\right)-f\left(x_{i},\ y_{i}\right)}{\Delta x}
+    \]
+    Вообще, выбор \( \Delta{x} \) является <a>отдельным вопросом</a> для исследования,
+    но в методе Эйлера \( \Delta{x} \) приравнивают к шагу h. 
+    А алгоритм модифицированного метода Эйлера выглядит следующим образом. Сперва мы находим y с волной
+    \( \widetilde{y}=y_{i}+f\left(x_{i},\ y_{i}\right)h \)
+    , а следующим действием определяем приближенное значение функции в следующей точке.
+    \[
+    y_{i+1}=y_{i}+h\frac{f\left(x_{i}+h,\ \widetilde{y_{i}}\right)+f\left(x_{i},\ y_{i}\right)}{2}
+    \]
+  </p>
+
+  
+  <p>
+    Обсудим, чем подход модифицированного метода Эйлера лучше обычного метода Эйлера. Ведь с одной стороны, модифицированный
+    метод Эйлера требует больших вычислений при том же шаге что и обычный метод Эйлера. 
+  </p>
+
+  <p>
+    Рассмотрим дифференциальное уравнение y'=const. Какую ошибку будет иметь обычный метод Эйлера при численном решении такого дифференциального уравнения?
+    Так как ошибка аппроксимации на каждом шаге будет нулевой, то и глобальная ошибка будет равняться нулю. 
+  </p>
+
+  <p>
+    Теперь рассмотрим дифференциальное уравнение \( y'=2x\). Интегральными кривыми в этом случае будут параболы \( y=x^{2}+C \). 
+    В этом случаем метод Эйлера на каждом шаге будет иметь ошибку \(h^2 \). Но если мы будем интегрировать это дифференциальное уравнение
+    модифицированным методом Эйлера, то на каждом шаге ошибка интегрирования будет равняться нулю. 
+    Это и есть преимущество модифицированного метода Эйлера. Интегральные кривые, как и любые кривые, во многом эффективнее аппроксимировать параболами, чем прямыми.
+  </p>
+
+
+  Сравним два метода на примере решения всё того же дифференциального уравнения
+  \[
+    \begin{cases}
+    y' = -y \sin(x) \\
+    y(0) = 1
+    \end{cases}
+    \]
+  Для этого напишем программу, которая решает данное дифференциальное уравнение модифицированный методом Эйлера.
+
+  <pre style='color:#000000;background:#ffffff; border: 1px solid #999; overflow-x: hidden; width: 620px;'>          
+  <span style='color:#696969; '>//значение производной в точке (х, у)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> derivative<span style='color:#808030; '>(</span> <span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>)</span> 
+      <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>-</span>y<span style='color:#808030; '>*</span><span style='color:#603000; '>sin</span><span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span> 
+  <span style='color:#800080; '>}</span>
+  
+  <span style='color:#800000; font-weight:bold; '>int</span> <span style='color:#400000; '>main</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+    <span style='color:#696969; '>// шаг интегрирования</span>
+    <span style='color:#800000; font-weight:bold; '>double</span> h <span style='color:#808030; '>=</span> <span style='color:#008000; '>0.5</span><span style='color:#800080; '>;</span> 
+    <span style='color:#696969; '>// начальное значение y </span>
+    <span style='color:#800000; font-weight:bold; '>double</span> y <span style='color:#808030; '>=</span> <span style='color:#008c00; '>1</span><span style='color:#800080; '>;</span>   
+    <span style='color:#696969; '>//условие останова </span>
+    <span style='color:#800000; font-weight:bold; '>double</span> xk <span style='color:#808030; '>=</span> <span style='color:#008c00; '>4</span><span style='color:#800080; '>;</span>  
+    <span style='color:#800000; font-weight:bold; '>double</span> y_wave<span style='color:#800080; '>;</span>
+
+    <span style='color:#800000; font-weight:bold; '>for</span><span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>=</span><span style='color:#008c00; '>0</span> <span style='color:#696969; '>/*начальное значение х*/</span><span style='color:#800080; '>;</span> 
+    x<span style='color:#808030; '>&lt;</span><span style='color:#808030; '>=</span>xk<span style='color:#800080; '>;</span>  x<span style='color:#808030; '>=</span>x<span style='color:#808030; '>+</span>h<span style='color:#808030; '>)</span>
+    <span style='color:#800080; '>{</span>
+    <span style='color:#696969; '>// вывод данных</span>
+    <span style='color:#666616; '>std</span><span style='color:#800080; '>::</span><span style='color:#603000; '>cout</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> x <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0f69ff; '>\t</span><span style='color:#800000; '>"</span><span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> y <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0f69ff; '>\n</span><span style='color:#800000; '>"</span><span style='color:#800080; '>;</span>
+    <span style='color:#696969; '>//определяем у с волной</span>
+    y_wave <span style='color:#808030; '>=</span> y  <span style='color:#808030; '>+</span> h <span style='color:#808030; '>*</span> derivative<span style='color:#808030; '>(</span>x<span style='color:#808030; '>,</span> y<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>       
+    <span style='color:#696969; '>// итерация модифицированным методом Эйлера</span>
+    y <span style='color:#808030; '>=</span> y <span style='color:#808030; '>+</span> <span style='color:#808030; '>(</span> derivative<span style='color:#808030; '>(</span>x<span style='color:#808030; '>,</span> y<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> derivative<span style='color:#808030; '>(</span>x<span style='color:#808030; '>+</span>h<span style='color:#808030; '>,</span> y_wave<span style='color:#808030; '>)</span>  <span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#808030; '>/</span><span style='color:#008000; '>2.0</span><span style='color:#800080; '>;</span>    
+    <span style='color:#800080; '>}</span>
+
+      <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+            
+</pre>
+<!--Created using ToHtml.com on 2021-08-09 18:47:19 UTC -->
+
+<br>
+<div class="image">
+  <img style="width: 600px;" src="https://habrastorage.org/webt/dk/o1/zv/dko1zve9cjgidqcuytie1bjbmx8.png" />   
+  <p>Сравнение решений полученных методом Эйлера и модифицированный методом Эйлера</p>
+</div>
+
+<p>
+  Проанализируем количественно и сравним зависимость глобальной ошибки получаемой модифицированный методом Эйлера 
+  и обычным методом Эйлером. Ошибку зададим как максимальный модуль разности между численным и аналитическим решением в узлах решения  \( {(x_0, y_0), (x_1, y_1), ... , (x_i, y_i) } ∈ I \).
+  Интервал интегрирования возьмем  \( x∈[0; 30] \), а шаг будем изменять от 0,4 до 0,01.
+</p>
+
+<img id="image1"  title = "Нажмите для смены изображения" style="width: 600px;"  onClick="imgsrc1();"  src="https://habrastorage.org/webt/x7/rt/qo/x7rtqolz_habiaxyt2ihkw2atia.png" />
+
+<P>
+  На графиках видно, что модифицированный метод Эйлера даёт более точный результат, даже при значительно большем 
+  шаге интегрирования. То есть используя модифицированный метод мы получаем большую точность при меньших вычислительных затратах.   
+</P>
+
+<h2> Интегрирование систем дифференциальных уравнений </h2>
+
+<p>
+  Интегрирование систем дифференциальных уравнений немногим отличается от интегрирования дифференциального уравнения 
+  первого порядка, но стоит отметить особенности, которые рассмотрим на конкретных примерах.
+</p>
+
+<figure class="theorem">
+  <figcaption><b>Пример ? </b> Задача о пружинном маятнике</figcaption>
+  <p>
+  <br>
+  Рассмотрим механическую систему, в которой брусок массой \(m\) закреплен на
+  пружине с коэффициентом жескости \(k\). Брусок может перемещаться с трением по горизонтальной 
+  поверхности с коэффициентом трения \(\mu\).
+  </p>
+  
+  <img style="width: 600px;" src="https://habrastorage.org/webt/3q/is/o4/3qiso4cqusqqvnm5iqwwlflklgw.png" />
+
+  <p>
+    Для составления дифференциального уравнения воспользуемся вторым законом Ньютона. 
+    \[ 
+    \ddot{x}=-kx-\mu \cdot sign(\dot{x})
+    \]  
+    Такое дифференциальное уравнение второго порядка можно свести к системе нормального вида
+    аналогично как в <b>примере 1</b>.
+    Для этого добавим новую переменую \(v\) и ещё одну уравнение \(\dot{x}=v\).
+    Получим следующую систему
+
+    \[
+    \begin{cases}
+      \dot{x}=v  \\
+      \dot{v}=-kx-\mu sign(v)
+    \end{cases}
+    \]
+
+    такую систему можно записать в векторном виде
+
+    \[
+    \frac{ \overrightarrow{dy} }{dt}=\overrightarrow{f}(\overrightarrow{y},t)
+    \]
+
+    в котором
+    \(
+    \overrightarrow{y}=(x, v)^T
+    \)
+
+    тогда по следующей формуле можно вычислить значения фазового вектора \(\vec{y}\) в \(n\) узлах
+    \[ 
+    \vec{y}( x_0 + nh ) \approx \vec{y_n} = \vec{y}_{n-1} + \vec{f}(x_0+(n-1)h, \vec{y}_{n-1})h
+    \]
+
+    Ниже представлен код на С++ реализующий решение данной задачи методом Эйлера для данной задачи:
+
+    <pre class="hljs" style="display: block; overflow-x: hidden; padding: 0.5em; background: rgb(240, 240, 240); color: rgb(68, 68, 68); border: 1px solid #999; width: 600px;">
+    
+  <span class="hljs-function"><span class="hljs-keyword" style="font-weight: 700;">float</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">sign</span><span class="hljs-params">(<span class="hljs-keyword" style="font-weight: 700;">float</span> val)</span>
+  </span>{
+    <span class="hljs-keyword" style="font-weight: 700;">if</span>(val &gt; <span class="hljs-number" style="color: rgb(136, 0, 0);">0</span>) <span class="hljs-keyword" style="font-weight: 700;">return</span> <span class="hljs-number" style="color: rgb(136, 0, 0);">1</span>;
+    <span class="hljs-keyword" style="font-weight: 700;">else</span> <span class="hljs-keyword" style="font-weight: 700;">if</span>(val &lt; <span class="hljs-number" style="color: rgb(136, 0, 0);">0</span>) <span class="hljs-keyword" style="font-weight: 700;">return</span> <span class="hljs-number" style="color: rgb(136, 0, 0);">-1</span>;
+    <span class="hljs-keyword" style="font-weight: 700;">return</span> <span class="hljs-number" style="color: rgb(136, 0, 0);">0</span>;
+  }
+  
+  <span class="hljs-comment" style="color: rgb(136, 136, 136);">//приведенный коэффициент трения </span>
+  <span class="hljs-keyword" style="font-weight: 700;">float</span> mu = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.01</span>;
+  <span class="hljs-comment" style="color: rgb(136, 136, 136);">//коэффициент жескости пружины</span>
+  <span class="hljs-keyword" style="font-weight: 700;">float</span> k = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.2</span>;
+  <span class="hljs-comment" style="color: rgb(136, 136, 136);">//масса бруска</span>
+  <span class="hljs-keyword" style="font-weight: 700;">float</span> m = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.2</span>;
+  
+  <span class="hljs-comment" style="color: rgb(136, 136, 136);">//значение производной координы</span>
+  <span class="hljs-function"><span class="hljs-keyword" style="font-weight: 700;">float</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">derivativeOfX</span><span class="hljs-params">(<span class="hljs-keyword" style="font-weight: 700;">float</span> t, <span class="hljs-keyword" style="font-weight: 700;">float</span> x, <span class="hljs-keyword" style="font-weight: 700;">float</span> v)</span> 
+  </span>{
+      <span class="hljs-keyword" style="font-weight: 700;">return</span> v; 
+  }
+  
+  <span class="hljs-comment" style="color: rgb(136, 136, 136);">//значение производной скорости</span>
+  <span class="hljs-function"><span class="hljs-keyword" style="font-weight: 700;">float</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">derivativeOfV</span><span class="hljs-params">(<span class="hljs-keyword" style="font-weight: 700;">float</span> t, <span class="hljs-keyword" style="font-weight: 700;">float</span> x, <span class="hljs-keyword" style="font-weight: 700;">float</span> v)</span> 
+  </span>{
+      <span class="hljs-keyword" style="font-weight: 700;">return</span> <span class="hljs-number" style="color: rgb(136, 0, 0);">1</span>/m*(-k*x-mu*sign(v)); 
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword" style="font-weight: 700;">int</span> <span class="hljs-title" style="color: rgb(136, 0, 0); font-weight: 700;">main</span><span class="hljs-params">()</span>
+  </span>{   
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// шаг интегрирования</span>
+      <span class="hljs-keyword" style="font-weight: 700;">float</span> h = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.05</span>; 
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// начальное значение координты</span>
+      <span class="hljs-keyword" style="font-weight: 700;">float</span> x0 = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.4</span>;   
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// начальное значение скорости</span>
+      <span class="hljs-keyword" style="font-weight: 700;">float</span> v0 = <span class="hljs-number" style="color: rgb(136, 0, 0);">0.2</span>;
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// время останова  </span>
+      <span class="hljs-keyword" style="font-weight: 700;">float</span> tk = <span class="hljs-number" style="color: rgb(136, 0, 0);">20</span>;
+      <span class="hljs-keyword" style="font-weight: 700;">float</span> x, v;
+      <span class="hljs-keyword" style="font-weight: 700;">for</span>(<span class="hljs-keyword" style="font-weight: 700;">float</span> t=<span class="hljs-number" style="color: rgb(136, 0, 0);">0</span> <span class="hljs-comment" style="color: rgb(136, 136, 136);">/*начальное значение t*/</span>;  t&lt;=tk; t=t+h )
+      {
+          <span class="hljs-comment" style="color: rgb(136, 136, 136);">// вывод данных</span>
+          <span class="hljs-built_in" style="color: rgb(57, 115, 0);">std</span>::<span class="hljs-built_in" style="color: rgb(57, 115, 0);">cout</span> &lt;&lt; t &lt;&lt; <span class="hljs-string" style="color: rgb(136, 0, 0);">" "</span> &lt;&lt; x0 &lt;&lt; <span class="hljs-string" style="color: rgb(136, 0, 0);">" "</span> &lt;&lt; v0 &lt;&lt; <span class="hljs-built_in" style="color: rgb(57, 115, 0);">std</span>::<span class="hljs-built_in" style="color: rgb(57, 115, 0);">endl</span>; 
+          <span class="hljs-comment" style="color: rgb(136, 136, 136);">// итерация методом Эйлера</span>
+          x = x0 + derivativeOfX(t, x0, v0)*h;    
+          v = v0 + derivativeOfV(t, x0, v0)*h;
+          <span class="hljs-comment" style="color: rgb(136, 136, 136);">// обновляем переменные</span>
+          x0=x; v0=v;   
+      }
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// Заметим, что для решения системы диф. уравнений</span>
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// необходимо создамать меременные, которые хранят </span>
+      <span class="hljs-comment" style="color: rgb(136, 136, 136);">// значаения вектора состояния на прошлом шаге</span>
+  
+      <span class="hljs-keyword" style="font-weight: 700;">return</span> <span class="hljs-number" style="color: rgb(136, 0, 0);">0</span>;
+  }
+    </pre>
+  </p>
+
+  <p>
+    Численное решение позволяет промоделировать механику системы и качественно проаналировать её поведение.
+    <iframe scrolling="no"  width="600px" height="245px" src="https://preview.p5js.org/inventorsib/embed/1uO_lvRuk"></iframe>
+    
+    Моделируя поведение системы, можно заметить, что амплитуда уменьшается линейно до того момента, когда сила 
+    трения превосходит силу натяжения пружины. Аналитическое выкладки по данной задачи есть в данной
+    <a href="http://www.physbook.ru/index.php/Слободянюк_А.И._Физика_10/17.5">статье</a>.
+
+    <div class="image" style="width: 600px;">
+      <img id="image"  title = "Нажмите для смены изображения" style="width: 600px;"  onClick="imgsrc();" src="https://habrastorage.org/webt/ol/sh/1q/olsh1qxjuywxx88gvaxyme3mb_8.png">
+    </div>
+</figure>
+
+<figure class="theorem">
+  <figcaption><b>Пример ? </b> Задача о полёте спутника в слоях атмосферы</figcaption>
+  <p>
+  <br><br>
+  Рассмотрим следующую задачу. Имеется космический аппарат, который движется в центральном поле тяготения
+  Земли и под дейстивием сопротивления атмосеферы изменяет орбиту. Неободимо проанализировать такое возмущенное 
+  движение спутника.
+  </p>
+    
+  <p>
+    Формулизуем данную задачу. Составим систему дифференциальных уравнений в неподвижной декартовой системе координат. 
+    Сила сопротивления от атмосферы направлена против вектора скорости и зависит как от плотности атмосферы (плотность атмосферы
+    характеризуется функцией atm(x, y)), так 
+    и от квадрата скорости.  
+    \[ 
+      \begin{cases}
+      \dot{v}_{x}=-\frac{\mu x}{\left(x^{2}+y^{2}\right)^{\frac{3}{2}}}-\frac{v_{x}}{v}\cdot v^{2}\cdot atm\left(x,\ y\right) \\
+      \dot{v}_{y}=-\frac{\mu y}{\left(x^{2}+y^{2}\right)^{\frac{3}{2}}}-\frac{v_{y}}{v}\cdot v^{2}\cdot atm\left(x,\ y\right) \\
+      \dot{x}=v_{x} \\
+      \dot{y}=v_{y}
+      \end{cases}
+    \]  
+  </p>
+
+  <p>
+  Для интегрирования данной системы воспользуемся методом Рунге-Кутта 4-ого порядка. 
+  Ниже пердставлена программа реализующая такой метод для данной задачи. 
+  </p>
+  
+<p>
+  
+<pre style='color:#000000;background:#ffffff; border: 1px solid #999; overflow-x:scroll; width: 620px;'>#</span><span style='color:#004a43; '>include </span><span style='color:#800000; '>&lt;</span><span style='color:#40015a; '>iostream</span><span style='color:#800000; '>></span>
+
+  <span style='color:#800000; font-weight:bold; '>using</span> namespace std<span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//гравитационный параметр</span>
+  <span style='color:#800000; font-weight:bold; '>const</span> <span style='color:#800000; font-weight:bold; '>double</span> mu <span style='color:#808030; '>=</span> <span style='color:#008000; '>398600.4418</span><span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//коэффициенты для метода Рунге-Кутты</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> a1<span style='color:#808030; '>,</span> a2<span style='color:#808030; '>,</span> b1<span style='color:#808030; '>,</span> b2<span style='color:#808030; '>,</span> c1<span style='color:#808030; '>,</span> c2<span style='color:#808030; '>,</span> d1<span style='color:#808030; '>,</span> d2<span style='color:#808030; '>,</span>
+  a3<span style='color:#808030; '>,</span> a4<span style='color:#808030; '>,</span> b3<span style='color:#808030; '>,</span> b4<span style='color:#808030; '>,</span> c3<span style='color:#808030; '>,</span> c4<span style='color:#808030; '>,</span> d3<span style='color:#808030; '>,</span> d4<span style='color:#800080; '>;</span>
+  
+  <span style='color:#800000; font-weight:bold; '>double</span> sq<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> val<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> val <span style='color:#808030; '>*</span> val<span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  
+  <span style='color:#696969; '>//функция атмосферы</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> atm<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> r <span style='color:#808030; '>=</span> <span style='color:#603000; '>sqrt</span><span style='color:#808030; '>(</span>sq<span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> sq<span style='color:#808030; '>(</span>y<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#008000; '>0.01</span><span style='color:#808030; '>/</span>r<span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  
+  <span style='color:#696969; '>//функции производных</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> d_vx<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vx<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vy<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> v <span style='color:#808030; '>=</span> <span style='color:#603000; '>sqrt</span><span style='color:#808030; '>(</span>sq<span style='color:#808030; '>(</span>vx<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> sq<span style='color:#808030; '>(</span>vy<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> r <span style='color:#808030; '>=</span> <span style='color:#603000; '>sqrt</span><span style='color:#808030; '>(</span>sq<span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> sq<span style='color:#808030; '>(</span>y<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>-</span>mu <span style='color:#808030; '>*</span> x <span style='color:#808030; '>/</span> <span style='color:#808030; '>(</span>r <span style='color:#808030; '>*</span> r <span style='color:#808030; '>*</span> r<span style='color:#808030; '>)</span> <span style='color:#808030; '>-</span> vx <span style='color:#808030; '>/</span> v <span style='color:#808030; '>*</span> sq<span style='color:#808030; '>(</span>v<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> atm<span style='color:#808030; '>(</span>x<span style='color:#808030; '>,</span> y<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> d_vy<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vx<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vy<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> v <span style='color:#808030; '>=</span> <span style='color:#603000; '>sqrt</span><span style='color:#808030; '>(</span>sq<span style='color:#808030; '>(</span>vx<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> sq<span style='color:#808030; '>(</span>vy<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> r <span style='color:#808030; '>=</span> <span style='color:#603000; '>sqrt</span><span style='color:#808030; '>(</span>sq<span style='color:#808030; '>(</span>x<span style='color:#808030; '>)</span> <span style='color:#808030; '>+</span> sq<span style='color:#808030; '>(</span>y<span style='color:#808030; '>)</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> <span style='color:#808030; '>-</span>mu <span style='color:#808030; '>*</span> y <span style='color:#808030; '>/</span> <span style='color:#808030; '>(</span>r <span style='color:#808030; '>*</span> r <span style='color:#808030; '>*</span> r<span style='color:#808030; '>)</span> <span style='color:#808030; '>-</span> vy <span style='color:#808030; '>/</span> v <span style='color:#808030; '>*</span> sq<span style='color:#808030; '>(</span>v<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> atm<span style='color:#808030; '>(</span>x<span style='color:#808030; '>,</span> y<span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> d_x<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vx<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vy<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> vx<span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> d_y<span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> y<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vx<span style='color:#808030; '>,</span> <span style='color:#800000; font-weight:bold; '>double</span> vy<span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>return</span> vy<span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+  
+  <span style='color:#800000; font-weight:bold; '>int</span> <span style='color:#400000; '>main</span><span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> x<span style='color:#808030; '>,</span> vx<span style='color:#808030; '>,</span> y<span style='color:#808030; '>,</span> vy<span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> x0 <span style='color:#808030; '>=</span> <span style='color:#008c00; '>42164</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>=</span> <span style='color:#008000; '>3.274672</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> t <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//время интегрирования</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> T <span style='color:#808030; '>=</span> <span style='color:#008000; '>86164.09054</span><span style='color:#808030; '>*</span><span style='color:#008c00; '>6</span><span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//шаг интегрирования</span>
+  <span style='color:#800000; font-weight:bold; '>double</span> h <span style='color:#808030; '>=</span> <span style='color:#008c00; '>1</span><span style='color:#800080; '>;</span>
+      
+  <span style='color:#800000; font-weight:bold; '>for</span> <span style='color:#808030; '>(</span><span style='color:#800000; font-weight:bold; '>int</span> i <span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#800080; '>;</span> t <span style='color:#808030; '>&lt;</span> T<span style='color:#800080; '>;</span> i<span style='color:#808030; '>+</span><span style='color:#808030; '>+</span><span style='color:#808030; '>)</span>
+  <span style='color:#800080; '>{</span>
+  <span style='color:#696969; '>//выводим каждую 1000-ую итерацию</span>
+  <span style='color:#800000; font-weight:bold; '>if</span> <span style='color:#808030; '>(</span>i <span style='color:#808030; '>%</span> <span style='color:#008c00; '>1000</span> <span style='color:#808030; '>=</span><span style='color:#808030; '>=</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>)</span>
+      cout <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> x0 <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '> </span><span style='color:#800000; '>"</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> y0 <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '> </span><span style='color:#800000; '>"</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> vx0 <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '> </span><span style='color:#800000; '>"</span> <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> vy0 <span style='color:#808030; '>&lt;</span><span style='color:#808030; '>&lt;</span> endl<span style='color:#800080; '>;</span>
+  
+  
+  a1 <span style='color:#808030; '>=</span> d_x<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>,</span> y0<span style='color:#808030; '>,</span> vx0<span style='color:#808030; '>,</span> vy0<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  b1 <span style='color:#808030; '>=</span> d_y<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>,</span> y0<span style='color:#808030; '>,</span> vx0<span style='color:#808030; '>,</span> vy0<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  c1 <span style='color:#808030; '>=</span> d_vx<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>,</span> y0<span style='color:#808030; '>,</span> vx0<span style='color:#808030; '>,</span> vy0<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  d1 <span style='color:#808030; '>=</span> d_vy<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>,</span> y0<span style='color:#808030; '>,</span> vx0<span style='color:#808030; '>,</span> vy0<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  
+  a2 <span style='color:#808030; '>=</span> d_x<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a1<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  b2 <span style='color:#808030; '>=</span> d_y<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a1<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  c2 <span style='color:#808030; '>=</span> d_vx<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a1<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  d2 <span style='color:#808030; '>=</span> d_vy<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a1<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d1 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  
+  a3 <span style='color:#808030; '>=</span> d_x<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a2<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  b3 <span style='color:#808030; '>=</span> d_y<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a2<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  c3 <span style='color:#808030; '>=</span> d_vx<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a2<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  d3 <span style='color:#808030; '>=</span> d_vy<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a2<span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d2 <span style='color:#808030; '>/</span> <span style='color:#008c00; '>2</span><span style='color:#808030; '>)</span><span style='color:#808030; '>*</span>h<span style='color:#800080; '>;</span>
+  
+  a4 <span style='color:#808030; '>=</span> d_x<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a3<span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b3<span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c3<span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d3<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  b4 <span style='color:#808030; '>=</span> d_y<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a3<span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b3<span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c3<span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d3<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  c4 <span style='color:#808030; '>=</span> d_vx<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a3<span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b3<span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c3<span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d3<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  d4 <span style='color:#808030; '>=</span> d_vy<span style='color:#808030; '>(</span>x0<span style='color:#808030; '>+</span>a3<span style='color:#808030; '>,</span> y0 <span style='color:#808030; '>+</span> b3<span style='color:#808030; '>,</span> vx0 <span style='color:#808030; '>+</span> c3<span style='color:#808030; '>,</span> vy0 <span style='color:#808030; '>+</span> d3<span style='color:#808030; '>)</span> <span style='color:#808030; '>*</span> h<span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//выполняем приращения </span>
+  x <span style='color:#808030; '>=</span> x0 <span style='color:#808030; '>+</span> <span style='color:#808030; '>(</span>a1 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> a2 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> a3 <span style='color:#808030; '>+</span> a4<span style='color:#808030; '>)</span> <span style='color:#808030; '>/</span> <span style='color:#008c00; '>6</span><span style='color:#800080; '>;</span>
+  y <span style='color:#808030; '>=</span> y0 <span style='color:#808030; '>+</span> <span style='color:#808030; '>(</span>b1 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> b2 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> b3 <span style='color:#808030; '>+</span> b4<span style='color:#808030; '>)</span> <span style='color:#808030; '>/</span> <span style='color:#008c00; '>6</span><span style='color:#800080; '>;</span>
+  vx <span style='color:#808030; '>=</span> vx0 <span style='color:#808030; '>+</span> <span style='color:#808030; '>(</span>c1 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> c2 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> c3 <span style='color:#808030; '>+</span> c4<span style='color:#808030; '>)</span> <span style='color:#808030; '>/</span> <span style='color:#008c00; '>6</span><span style='color:#800080; '>;</span>
+  vy <span style='color:#808030; '>=</span> vy0 <span style='color:#808030; '>+</span> <span style='color:#808030; '>(</span>d1 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> d2 <span style='color:#808030; '>+</span> <span style='color:#008c00; '>2</span> <span style='color:#808030; '>*</span> d3 <span style='color:#808030; '>+</span> d4<span style='color:#808030; '>)</span> <span style='color:#808030; '>/</span> <span style='color:#008c00; '>6</span><span style='color:#800080; '>;</span>
+  
+  t <span style='color:#808030; '>=</span> t <span style='color:#808030; '>+</span> h<span style='color:#800080; '>;</span>
+  
+  <span style='color:#696969; '>//обновление </span>
+  x0 <span style='color:#808030; '>=</span> x<span style='color:#800080; '>;</span> y0 <span style='color:#808030; '>=</span> y<span style='color:#800080; '>;</span> vx0 <span style='color:#808030; '>=</span> vx<span style='color:#800080; '>;</span> vy0 <span style='color:#808030; '>=</span> vy<span style='color:#800080; '>;</span>
+  <span style='color:#800080; '>}</span>
+      
+      
+  <span style='color:#800080; '>}</span>
+</pre>
+      <!--Created using ToHtml.com on 2021-09-04 16:13:12 UTC -->
+  
+</p>
+
+<p>
+  Результатом решения получаем траекторию, которая показывает эволюцию орбиты при такой постановке задачи. 
+  Как видно из решения орбита из эллиптической переходит в круговую. Такой же вывод можно получить из анализа 
+  данной задачи в <a>оскулирующих элементах</a>. 
+  <br>
+  Стоит также отметить, что значения координат не ограничены снизу, то есть нам доступна точка (начало координат) 
+  в которой производная стремится к бесконечности. При численном интегрировании в данной точке итерационный процесс расходится. 
+</p>
+
+<iframe scrolling="no" width="600px" height="445px"  src="https://preview.p5js.org/inventorsib/embed/KUbYd_p2e"></iframe>
+
+<script>
+  var i=0;
+  var i1=0;
+  var image=document.getElementById("image");
+  var image1=document.getElementById("image1");
+  // Добавьте свои картинки в массив через запятую
+  var imgs=new Array('https://habrastorage.org/webt/ol/sh/1q/olsh1qxjuywxx88gvaxyme3mb_8.png',
+  'https://habrastorage.org/webt/si/5i/w5/si5iw5yqe53k3f_rgdsxhzigbcw.png');
+  var imgs1=new Array('https://habrastorage.org/webt/x7/rt/qo/x7rtqolz_habiaxyt2ihkw2atia.png',
+  'https://habrastorage.org/webt/kb/b8/tt/kbb8tt4ktxpxnymwb1vvo_ynbw0.png');
+  function imgsrc() {
+      i++;i%=imgs.length;
+      image.src = imgs[i];
+  }
+  function imgsrc1() {
+      i1++;i1%=imgs1.length;
+      image1.src = imgs1[i1];
+  }
+</script>
+
+
+</figure>
+
+<h2> Выбор шага интегрирования</h2>
+  <p>
+    Как было сказано выше, точность метода растёт при уменьшении шага интегрирования. Зачастую шаг выбирается на основе поверхностного 
+    анализа получаемого результата. Но существует ряд задач, где этого недостаточно. 
+    Очевидным является тот факт, что если ошибка аппроксимации соответвующая определенновму методу и шагу меньше ошибки округления,
+    то шаг выбран слишком маленьким. Это грозит не только долгим расчётом, но и тем, что повышение количества итераций приводит к 
+    накоплению ошибки округления. 
+  </p>
+  <p>
+    Для опредения оптимального шага интегрирования нам нужно оценить методическую ошибку по главному члену погрешности, который можно 
+    получить из ряда Тейлора, оценив соответсвующую производную. 
+  </p>
+
+  <figure class="theorem">
+    <figcaption><b>Пример ? </b> Оценка методической ошибки в задаче полёта спутника</figcaption>
+    <p>
+    <br><br>
+    Оценим методическую погрешность для задачи из примера ?. Рассмотрим такую оценку для метода Эйлера. Для определения ошибки метода
+    Эйлера нам нужно оценить сверху вторую производную.
+    <img style="width: 560px;" src="https://habrastorage.org/webt/gm/rm/01/gmrm018a4s-evy2sur9kwtil4k4.png" />
+    Из постановки задачи мы имеем, что
+    \[ \dot{v}_{x}=-\frac{\mu x}{\left(x^{2}+y^{2}\right)^{\frac{3}{2}}}-\frac{v_{x}}{v}\cdot v^{2}\cdot atm\left(x,\ y\right) \]
+    Из чего и получим вторую производную. 
+    </p>
+    <p>
+      При взятии производной будем считать что функция atm(x, y) не зависит от времени. 
+      \[ \ddot{v}_{x}=-\mu\left(\frac{\dot{x}r^{3}-x\left(3xr\dot{x}\right)}{r^{6}}\right)-\left(\frac{3v_{x}^{2}v_{x}v^{2}+\left(2v_{x}\dot{v}_{x}+2v_{y}\dot{v}_{y}\right)v_{x}^{3}}{v^{2}}\right)atm(x, y) \]
+    </p>
+    <p>
+      Если задать \(\mu=398600\) и сверху оценить фазовые координаты 
+      \[ x=41000 км\]
+      \[ r=41000 км\]
+      \[ v_{x}=4 км/c \]
+      \[ v_{y}=4 км/c\]
+      \[ h=1 c\]
+      \[ atm \approx 0 \]
+      Тогда ошибка метода по скорости на итерации примерно равна
+      \[ v_{x_{err}} \approx 10^{-7}  км/c\]
+    </p>
+  </figure>
+</div>
+ 
+<h2> Интегрирование в обратную сторону</h2>
+<p>
+  Иногда в задачах численного интегрирования встречается необходимость интегрировать систему в обратную сторону по времени, то есть
+  "идти" с отрицательным шагом по h. 
+  <br>
+  Также такой подход применяется для проверки адекватности работы метода в условиях поставленной задачи. 
+  Сначала система интегрируется в прямом направлении, а затем, по полученным конечным значениям вектора состояния, интегрируется
+  в обратном направлении. Сравнивая полученные при обратном интегрировании значения фазовых координат 
+  в начальное время с задаными начальными условиями можно оценить ошибку численного интегрирования.  
+</p>
+        
+<details> 
+  <summary>Замечание</summary>
+  <p> 
+    Если при обратном интегрировании использовать неявную схему, 
+  </p>
+</details>
+
+
+<!--end of leftcol-->
+</div>
+
+ <div class="rightcol">  </div>
+<!----
+    
+ ---->
+</div>
+
+<div id="footer"><p1 style="  font-size: 27px;">Cайт находится в разработке</p1> </div>
+
+</div>
+
+</body>
+</html>
