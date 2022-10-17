@@ -1,0 +1,139 @@
+.theorem {
+    margin: 0 0 1em 0;
+    padding: 4px;
+    padding-left: 10px;
+    font-family: Helevetica;
+    border-left: 2.2px outset rgb(0, 63, 158);
+}
+.theorem figcaption::after {
+    content: " \2014 "
+}
+.theorem figcaption,
+.theorem p {
+    display: inline;
+}
+
+.example {
+    margin: 0 0 1em 0;
+    font-family: Helevetica;
+}
+
+.tags
+{
+    color: rgb(65, 65, 65);
+}
+.tags a:link
+{
+    color: rgb(65, 65, 65);
+}
+.tags a:hover
+{
+    color: rgb(53, 0, 199);
+}
+.author{
+    color: rgb(0, 18, 184);
+}
+.image img {
+    width: 600px;
+} 
+.image p{
+    font-style: italic;
+    text-align: center;
+    margin: 3px;
+}
+
+#image:hover{
+   
+    border: 3px solid rgb(0, 81, 255);
+    transform: scale(0.978);
+}
+#image1:hover{
+   
+    border: 3px solid rgb(0, 81, 255);
+    transform: scale(0.99);
+}
+
+.articleText{
+    width: 600px;
+    font-size: 16px;
+    font-family: -apple-system,BlinkMacSystemFont,Arial,sans-serif;
+}
+
+
+.articleFormula{
+    display:block;
+    margin:auto;
+}
+
+
+a.aFormula:link{
+    color: #3e21e4;
+}
+
+
+.hiddeDiv
+{
+  color: rgb(180, 16, 16);
+}
+
+a.aFormula:hover .hiddeDiv
+{
+    color: green;
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='squiggle-link' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:ev='http://www.w3.org/2001/xml-events' viewBox='0 0 20 4'%3E%3Cstyle type='text/css'%3E.squiggle{animation:shift .3s linear infinite;}@keyframes shift {from {transform:translateX(0);}to {transform:translateX(-20px);}}%3C/style%3E%3Cpath fill='none' stroke='%23453886' stroke-width='2' class='squiggle' d='M0,3.5 c 5,0,5,-3,10,-3 s 5,3,10,3 c 5,0,5,-3,10,-3 s 5,3,10,3'/%3E%3C/svg%3E");
+}
+
+
+
+
+
+    details {
+    border: 1px solid #999;
+    
+    margin: 0 2em .4em 2em;
+    padding: 1.04%;
+    }
+     
+    details {
+    margin: 1em;
+    cursor: pointer;
+    }
+     
+    summary {
+    
+    color: rgb(255, 255, 255);
+    
+    cursor: pointer;
+    margin: -1%;
+    padding: 0px 10px;
+    background: rgb(0, 0, 105);
+    }
+
+.articleCode{
+    font-size: 12px;
+}
+
+
+
+    
+    #articleTable {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    #articleTable td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    
+    #articleTable tr:nth-child(even){background-color: #f2f2f2;}
+    
+    #articleTable tr:hover {background-color: #ddd;}
+    
+    #articleTable th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #2d1283;
+        color: white;
+    }
